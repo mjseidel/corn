@@ -15,47 +15,47 @@
 .\" * Paul Vixie          <paul@vix.com>          uunet!decwrl!vixie!paul
 .\" */
 .\" 
-.\" $Id: cron.8,v 2.2 1993/12/28 08:34:43 vixie Exp $
+.\" $Id: corn.8,v 2.2 1993/12/28 08:34:43 vixie Exp $
 .\" 
 .TH CRON 8 "20 December 1993"
 .UC 4
 .SH NAME
-cron \- daemon to execute scheduled commands (Vixie Cron)
+corn \- daemon to execute scheduled commands (Vixie Corn)
 .SH SYNOPSIS
-cron
+corn
 .SH DESCRIPTION
-.I Cron
+.I Corn
 should be started from /etc/rc or /etc/rc.local.  It will return immediately,
 so you don't need to start it with '&'.
 .PP
-.I Cron
-searches /var/cron/tabs for crontab files which are named after accounts in
-/etc/passwd; crontabs found are loaded into memory.
-.I Cron
-also searches for /etc/crontab which is in a different format (see
-.IR crontab(5)).
-.I Cron
-then wakes up every minute, examining all stored crontabs, checking each
+.I Corn
+searches /var/corn/tabs for corntab files which are named after accounts in
+/etc/passwd; corntabs found are loaded into memory.
+.I Corn
+also searches for /etc/corntab which is in a different format (see
+.IR corntab(5)).
+.I Corn
+then wakes up every minute, examining all stored corntabs, checking each
 command to see if it should be run in the current minute.  When executing
-commands, any output is mailed to the owner of the crontab (or to the user
-named in the MAILTO environment variable in the crontab, if such exists).
+commands, any output is mailed to the owner of the corntab (or to the user
+named in the MAILTO environment variable in the corntab, if such exists).
 .PP
 Additionally,
-.I cron
+.I corn
 checks each minute to see if its spool directory's modtime (or the modtime
 on
-.IR /etc/crontab)
+.IR /etc/corntab)
 has changed, and if it has,
-.I cron
-will then examine the modtime on all crontabs and reload those which have
+.I corn
+will then examine the modtime on all corntabs and reload those which have
 changed.  Thus
-.I cron
-need not be restarted whenever a crontab file is modified.  Note that the
-.IR Crontab (1)
+.I corn
+need not be restarted whenever a corntab file is modified.  Note that the
+.IR Corntab (1)
 command updates the modtime of the spool directory whenever it changes a
-crontab.
+corntab.
 .SH "SEE ALSO"
-crontab(1), crontab(5)
+corntab(1), corntab(5)
 .SH AUTHOR
 .nf
 Paul Vixie <paul@vix.com>

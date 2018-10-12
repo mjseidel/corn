@@ -23,7 +23,7 @@ static char rcsid[] = "$Id: user.c,v 2.8 1994/01/15 20:43:43 vixie Exp $";
  */
 
 
-#include "cron.h"
+#include "corn.h"
 
 
 void
@@ -33,7 +33,7 @@ free_user(u)
 	entry	*e, *ne;
 
 	free(u->name);
-	for (e = u->crontab;  e != NULL;  e = ne) {
+	for (e = u->corntab;  e != NULL;  e = ne) {
 		ne = e->next;
 		free_entry(e);
 	}
@@ -42,9 +42,9 @@ free_user(u)
 
 
 user *
-load_user(crontab_fd, pw, name)
-	int		crontab_fd;
-	struct passwd	*pw;		/* NULL implies syscrontab */
+load_user(corntab_fd, pw, name)
+	int		corntab_fd;
+	struct passwd	*pw;		/* NULL implies syscorntab */
 	char		*name;
 {
 	char	envstr[MAX_ENVSTR];
@@ -54,18 +54,18 @@ load_user(crontab_fd, pw, name)
 	int	status;
 	char	**envp;
 
-	if (!(file = fdopen(crontab_fd, "r"))) {
-		perror("fdopen on crontab_fd in load_user");
+	if (!(file = fdopen(corntab_fd, "r"))) {
+		perror("fdopen on corntab_fd in load_user");
 		return NULL;
 	}
 
 	Debug(DPARS, ("load_user()\n"))
 
-	/* file is open.  build user entry, then read the crontab file.
+	/* file is open.  build user entry, then read the corntab file.
 	 */
 	u = (user *) malloc(sizeof(user));
 	u->name = strdup(name);
-	u->crontab = NULL;
+	u->corntab = NULL;
 
 	/* 
 	 * init environment.  this will be copied/augmented for each entry.
@@ -73,7 +73,7 @@ load_user(crontab_fd, pw, name)
 	envp = env_init();
 
 	/*
-	 * load the crontab
+	 * load the corntab
 	 */
 	while ((status = load_env(envstr, file)) >= OK) {
 		switch (status) {
@@ -84,8 +84,8 @@ load_user(crontab_fd, pw, name)
 		case FALSE:
 			e = load_entry(file, NULL, pw, envp);
 			if (e) {
-				e->next = u->crontab;
-				u->crontab = e;
+				e->next = u->corntab;
+				u->corntab = e;
 			}
 			break;
 		case TRUE:

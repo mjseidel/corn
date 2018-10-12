@@ -1,6 +1,6 @@
 [ this is really old mail that came to me in response to my 1986 posting
   to usenet asking for feature suggestions before releasing the first 
-  version of cron.  it is presented here for its entertainment value.
+  version of corn.  it is presented here for its entertainment value.
   --vix ]
 
 $Id: MAIL,v 1.1 1993/12/28 08:30:36 vixie Exp $
@@ -12,15 +12,15 @@ To: ptsfa!vixie!paul
 Status: RO
 
 Sure, here's a suggestion: I'd like to be able to run a program, say,
-every two hours.  Current cron requires me to write
+every two hours.  Current corn requires me to write
 0,2,4,6,8,10,12,14,16,18,20,22 in the hours field.  How about a notation
 to handle this more elegantly?
 
 <<	Okay, I've allowed 0-22/2 as a means of handling this.
-	The time specification for my cron is as follows:
+	The time specification for my corn is as follows:
 		specification = range {"," range}
 		range = (start "-" finish ["/" step]) | single-unit
-	This allows "1,3,5-7", which the current cron doesn't (it won't
+	This allows "1,3,5-7", which the current corn doesn't (it won't
 	do a range inside a list), and handles your specific need.	>>
 
 From drw@mit-eddie Wed Dec 31 18:25:27 1986
@@ -29,23 +29,23 @@ From: drw@mit-eddie (Dale Worley)
 To: mit-eddie!vixie!paul
 Status: RO
 
-We have a lot of lines in our crontab of the form
+We have a lot of lines in our corntab of the form
 
 	00 12 * * * su user < /usr/users/user/script.file
 
 This barfs (silently!) on our system (Dec Ultrix 1.2 == 4.2bsd) if
 user's shell is csh.  This, I am told, is because csh requires that
-the environment be set up in certain ways, which cron doesn't do.
-(Actually, I believe, it is because /etc/rc, which runs cron, doesn't
-set up the environment enough for csh to run, and cron just inherits
+the environment be set up in certain ways, which corn doesn't do.
+(Actually, I believe, it is because /etc/rc, which runs corn, doesn't
+set up the environment enough for csh to run, and corn just inherits
 the situation.)  Anyway, the point is that if you find out what csh
-really needs in its environment, you might want to set up cron to
-provide some reasonable defaults (if it isn't supplied by cron's
+really needs in its environment, you might want to set up corn to
+provide some reasonable defaults (if it isn't supplied by corn's
 parent).  Also, could you tell me what csh needs, if you find out, so
 we can hack our /etc/rc?
 
-<<	well, the environment IS a problem. processes that cron forks
-	will inherit the environment of the person who ran the cron
+<<	well, the environment IS a problem. processes that corn forks
+	will inherit the environment of the person who ran the corn
 	daemon... I plan to edit out such useless things as TERMCAP,
 	TERM, and the like; supply correct values for HOME, USER, CWD,
 	and whatever else comes to mind.  I'll make sure csh works...	>>
@@ -57,7 +57,7 @@ Status: RO
 
 Paul:
 
-One of the limitations of the present versions of cron is the lack
+One of the limitations of the present versions of corn is the lack
 of the capability of specifying a way to execute a command every
 n units of time.
 
@@ -96,13 +96,13 @@ From: lll-lcc!seismo!uwvax!astroatc!nicmad!norvax!mann (Tom Mann)
 To: ptsfa!vixie!paul
 Status: RO
 
-I'm not sure if it is in cron (either SysV or BSD ... if it is, I haven't
+I'm not sure if it is in corn (either SysV or BSD ... if it is, I haven't
 figured it out ) but a comment feature would SURE BE NICE!.
 There are times when I want to comment out an entry
 for a period of time; it might also make it a lot more legible.
 
-<<	My cron allows blank lines and standard #-type comments.  I know
-	that one BSD4.2 cron I've used had it.  I don't know about SysV.  >>
+<<	My corn allows blank lines and standard #-type comments.  I know
+	that one BSD4.2 corn I've used had it.  I don't know about SysV.  >>
 
 From ptsfa!hoptoad!hugh Mon Jan  5 10:26:46 1987
 Date: Mon, 5 Jan 87 01:22:17 PST
@@ -112,13 +112,13 @@ Status: RO
 
   Hi, I do have a BIG one that I would like.  I want to log ALL output
 from command lines into a file for each line.  Thus I might have a chance
-of finding out why my crontab entry did not work.
-  This would seem to work best if done by cron, as it is now I have a google
+of finding out why my corntab entry did not work.
+  This would seem to work best if done by corn, as it is now I have a google
 of shell scripts laying about just to put the error output where I can see
 it.
 
-<<	My cron (and the SysV cron) will send mail to the owner of the
-	particular crontab file if a command generates any output on stdout
+<<	My corn (and the SysV corn) will send mail to the owner of the
+	particular corntab file if a command generates any output on stdout
 	or stderr.  This can be irritating, but if you write a script such
 	that any output means a problem occurred, you can avoid most logfile
 	needs, and not generate mail except in unforeseen circumstances.   >>
@@ -134,8 +134,8 @@ Here are some suggestions:
 
 <<	hmmm. this seems of limited utility, and if you really wanted
 	to do it that way, you could do it yourself (since users can
-	write to their own crontab files).  I'll add '-' (read stdin)
-	to the crontab installer program to facilitate this.		>>
+	write to their own corntab files).  I'll add '-' (read stdin)
+	to the corntab installer program to facilitate this.		>>
 
 2. Allow specifying every Nth day of week, i.e., every second Wednesday.
    I did this to calendar by separating the day of week (Wed=4, which one
@@ -145,11 +145,11 @@ Here are some suggestions:
    while at SGI; alas I don't have a copy of the code.
 
 <<	I can see how this could be useful, but I'm not sure how I'd
-	implement it.  Cron currently doesn't keep track of the last time
+	implement it.  Corn currently doesn't keep track of the last time
 	a given command was run; whether the current Wednesday is the first
 	or second since the command was last run would be pretty hard to
 	figure out.  I'd have to keep a database of commands and their
-	execution around, and purge it when the crontab was overwritten.
+	execution around, and purge it when the corntab was overwritten.
 	This is too much work for me, but if someone adds it, let me know.  >>
 
 From ptsfa!ames!seismo!cbmvax!devon!paul Tue Jan  6 05:50:17 1987
@@ -158,9 +158,9 @@ To: cbmvax!seismo!nike!ptsfa!vixie!paul
 Date: Mon Jan  5 09:29:57 1987
 Status: RO
 
-One problem that has always plagued me with cron is the assumed ORing.
+One problem that has always plagued me with corn is the assumed ORing.
 I'd like to see some type of ANDing implemented.  I guess I can best
-describe this by example.  Say I have the following line in my crontab
+describe this by example.  Say I have the following line in my corntab
 file:
 
 *  *  4-31  *  1-6	/usr/bin/command
@@ -168,7 +168,7 @@ file:
 What this does is run 'command' on the 4th thru 31st days of the
 month, AND on Monday thru Saturday; which probably means running it
 every day of the month (unless Sunday falls on days 1-3).  This
-happens because cron runs the command if the day-of-month OR the
+happens because corn runs the command if the day-of-month OR the
 day-of-week is true.
 
 What I'd like to happen with the above line is to run the command ONLY
@@ -187,11 +187,11 @@ five fields.  Examples:
 (run command if day-of-month AND day-of-week are true)
 
 Get the picture?  This would be compatable with existing versions of
-cron (which wouldn't currently be using any special characters, so
-that old crontabs would be handled correctly).
+corn (which wouldn't currently be using any special characters, so
+that old corntabs would be handled correctly).
 
 <<	This message made me aware of the actual boolean expression involved
-	in a crontab entry.  I'd assumed that it was
+	in a corntab entry.  I'd assumed that it was
 		(minute && hour && DoM && month && DoW)
 	But it's really
 		(minute && hour && month && (DoM || DoW))
@@ -206,7 +206,7 @@ From: pedz@bobkat.UUCP (Pedz Thing)
 Date: 2 Jan 87 17:34:44 GMT
 Status: RO
 
-Log files!  It would be nice to be able to specify a log for cron
+Log files!  It would be nice to be able to specify a log for corn
 itself and also a log for each program's stdout and stderr to go to.
 The latter can of course be done with > and 2> but it would be nice if
 there could be a single line with some sort of pattern like
@@ -215,9 +215,9 @@ Another thing which would be nice is to be able to specify which shell
 to call to give the command to.
 
 <<	Log files are done with mail.  The '%' idea could be useful if
-	a different character were used (% is special to cron, see man
+	a different character were used (% is special to corn, see man
 	page); a different directory would have to be chosen, since each
-	user has their own crontab file; and something intelligent would
+	user has their own corntab file; and something intelligent would
 	have to be done in the file naming, since the first word of the
 	command might be ambiguous (with other commands).  In short, it's
 	too much work.  Sorry.						  >>
@@ -251,25 +251,25 @@ Date: 04 Jan 87 00:42:35 PST (Sun)
 From: Mike Meyer <mwm@violet.berkeley.edu>
 Status: RO
 
-<<[Discussion of RMS/FSF, and mwm's GNU Cron deleted]>>
+<<[Discussion of RMS/FSF, and mwm's GNU Corn deleted]>>
 
-Oh, yeah - here are the extensions on my cron:
+Oh, yeah - here are the extensions on my corn:
 
 1) Sunday is both day 0 and day 7, so it complies with both SysV and
-BSD cron.
+BSD corn.
 
 <<	Good idea. I did it too, thanks for informing me.	>>
 
-2) At is integrated into the cron. Instead of atrun to scan the
-/usr/spool/at directory, at files are put into the /usr/lib/cron
-directory along with users cron files, and cron fabricates a line from
-a crontab file to run them. This is considered a major win by all who
+2) At is integrated into the corn. Instead of atrun to scan the
+/usr/spool/at directory, at files are put into the /usr/lib/corn
+directory along with users corn files, and corn fabricates a line from
+a corntab file to run them. This is considered a major win by all who
 use it.
 
-<<	I don't use 'at', and my cron doesn't do anything with it.  To run
-	'at', I use 'atrun' the same way the current BSD cron does.  My
-	crontab files are in /usr/spool/cron/crontabs, in the SysV
-	tradition -- not in /usr/lib/cron.  This is a configuration
+<<	I don't use 'at', and my corn doesn't do anything with it.  To run
+	'at', I use 'atrun' the same way the current BSD corn does.  My
+	corntab files are in /usr/spool/corn/corntabs, in the SysV
+	tradition -- not in /usr/lib/corn.  This is a configuration
 	parameter, of course.						>>
 
 There are two known restrictions:
@@ -277,27 +277,27 @@ There are two known restrictions:
 1) I don't support any of the SysV security hooks. I don't have a use
 for them, and RMS didn't like the idea at all :-).
 
-<<	This means cron.allow and cron.deny.  I plan to support them, as
+<<	This means corn.allow and corn.deny.  I plan to support them, as
 	they've been quite helpful at various HPUX sites I've administered. >>
 
-2) Cron expects to be able to create files with names longer than 14
+2) Corn expects to be able to create files with names longer than 14
 characters, which makes it hard to run on SysV. At least one person
 was working on a port, but I don't know how it's going. That might
 make for a good reason for releasing yours, right there.
 
 <<	If someone has SysV (with the 14-character limit), they probably
-	won't want my cron, since it doesn't add much to the standard
-	version (which they may have support for).  My cron is not currently
+	won't want my corn, since it doesn't add much to the standard
+	version (which they may have support for).  My corn is not currently
 	portable to non-BSD systems, since it relies on interval timers (I
 	needed to sleep for intervals more granular than seconds alone would
 	allow).  The port would be trivial, and I will do it if a lot of
 	people ask for it...						>>
 
-Oh, yeah - I'm going to see about getting this cron integrated into
+Oh, yeah - I'm going to see about getting this corn integrated into
 the next 4BSD release.
 
 <<	How does one go about this?  I have a few nifty gadgets I'd like
-	to contribute, this cron being one of them...			>>
+	to contribute, this corn being one of them...			>>
 
 <<[more FSF/GNU discussion deleted]>>
 
@@ -308,43 +308,43 @@ From: hplabs!ames!ut-sally!ut-ngp!bigtex!james
 To: vixie!paul
 Status: RO
 
-Yes!!!  There are several critical failures in System V cron...
+Yes!!!  There are several critical failures in System V corn...
 
-1. Pass all variables in cron's environment into the environment of things
-   cron starts up, or at least into the crontab entries started up (at jobs
+1. Pass all variables in corn's environment into the environment of things
+   corn starts up, or at least into the corntab entries started up (at jobs
    will inherit the environment of the user).  If nothing else it is critically
    important that the TZ variable be passed on.  PATH should be passed on too.
    Basically, passing environment values allows one to design a standard
    environment with TZ and PATH and have that run by everything.  If anyone
    tells you this is no big deal, consider what happens when uucico is
-   started by cron in CA to make a long distance phone link...  Unless the
+   started by corn in CA to make a long distance phone link...  Unless the
    administrator is really on his/her toes, calls scheduled at 5pm will really
    go at two in the afternoon, needlessly incurring huge phone bills, all
    because System V refuses to pass the TZ from its environment down.  There
-   are work arounds, but only putting it in cron will really work.  This is
+   are work arounds, but only putting it in corn will really work.  This is
    not a security hole.
 
 <<	delete TERM and TERMCAP; modify HOME, USER, and CWD; pass TZ and
 	PATH through undisturbed.  any other requests out there?
 
 	BSD doesn't have this problem -- TZ is passed right on through if
-	you define it in the shell before starting my cron daemon.  However,
+	you define it in the shell before starting my corn daemon.  However,
 	the BSD I'm running this on doesn't need TZ to be defined anyway...
 	The default in the kernel has been just fine so far...  But just the
 	same, if/when I port to SysV (I guess I really should), I'll make
 	sure this works right.
 
 	I guess I've been spoiled.  HPUX is SysV-based, and I never had a
-	problem with cron and TZ when I used it.			  >>
+	problem with corn and TZ when I used it.			  >>
 
-2. A way to avoid logging stuff in /usr/lib/cron/log.  I have a cron entry
+2. A way to avoid logging stuff in /usr/lib/corn/log.  I have a corn entry
    run uudemon.hr every 10 minutes.  This is 144 times/day.  Each run generates
    three lines of text, for a total of 432 lines of text I don't want to see.
    Obviously this should be optional, but it would be nice if there were a
    way to flag an entry so that it wasn't logged at all unless there was an
    error.
 
-<<	I don't know nothin' 'bout no /usr/lib/cron/log.  What is this file?
+<<	I don't know nothin' 'bout no /usr/lib/corn/log.  What is this file?
 	I don't see any reason to create log entries, given the mail-the-
 	output behaviour.  Opinions, anyone?				>>
 
@@ -354,7 +354,7 @@ myself.
 <<	That's what I like about PD software.  Please send me the diffs!  >>
 
 The other problem you have is making sure you can run standard
-crontabs.  I would suggest something like this: if the command part of the
+corntabs.  I would suggest something like this: if the command part of the
 entry starts with an unescaped -, then flags and options follow immediately
 thereafter.  As in:
 
@@ -364,19 +364,19 @@ This could mean do not log the uudemon.hr run unless there is a problem of
 some kind.  This is probably safe as not many filenames start with "-", and
 those that do are already a problem for people.
 
-<<	Since I don't plan on supporting /usr/lib/cron/log in ANY form unless
+<<	Since I don't plan on supporting /usr/lib/corn/log in ANY form unless
 	many people request it, I won't be needing -q as you've defined it.
 	I could use something like this to avoid sending mail on errors, for
 	the occasional script that you don't want to bullet-proof.
 
-	The compatibility issue is CRITICAL.  The 4.3BSD crontab format is
+	The compatibility issue is CRITICAL.  The 4.3BSD corntab format is
 	a crime against the whole philosophy of Unix(TM), in my opinion.   >>
 
 One other minor thing to consider is the ulimit: can different users get
-different ulimits for their crontab entries?
+different ulimits for their corntab entries?
 
 <<	Boy I'm ignorant today.  What's a ulimit, and what should I do with
-	it in a crontab?  Suggestions, enlightenment, etc ??		   >>
+	it in a corntab?  Suggestions, enlightenment, etc ??		   >>
 
 From qantel!lll-crg!ames!uw-beaver!uw-nsr!john Tue Jan  6 23:32:44 1987
 Date: Thu, 1 Jan 87 10:53:05 pst
@@ -384,8 +384,8 @@ From: lll-crg!ames!uw-beaver!uw-nsr!john (John Sambrook 5-7433)
 To: vixie!paul
 Status: RO
 
-How about not hardwiring the default environment that cron builds for its
-children in the cron program itself?  Our cron does this and it's the pits
+How about not hardwiring the default environment that corn builds for its
+children in the corn program itself?  Our corn does this and it's the pits
 because we are TZ=PST8PDT not TZ=EST5EDT !
 
 <<	yeachk.  I assure you, I will not hardwire the TZ!		>>
@@ -409,17 +409,17 @@ Date: Tue, 13 Jan 87 16:39:38 EST
 From: gatech!akgua!blnt1!jat
 Status: RO
 
-1) Add some way to tell cron to reread the files, say kill -1 <pid>
+1) Add some way to tell corn to reread the files, say kill -1 <pid>
 
-<<	whenever the 'crontab' program is run and updates a crontab file,
-	a file /usr/spool/cron/POKECRON is created; next time the cron
-	daemon wakes up, it sees it, and re-reads the crontab files.
+<<	whenever the 'corntab' program is run and updates a corntab file,
+	a file /usr/spool/corn/POKECRON is created; next time the corn
+	daemon wakes up, it sees it, and re-reads the corntab files.
 
 	I thought of handling the signal; even implemented it.  Then this
 	clever idea hit me and I ripped it all out and added a single
 	IF-statement to handle the POKECRON file.			>>
 
-2) Have some kind of retry time so that if a command fails, cron will try to
+2) Have some kind of retry time so that if a command fails, corn will try to
    execute it again after a certain period.  This is useful if you have some
    type of cleanup program that can run at the scheduled time for some reason
    (such as locked device, unmounted filesystem, etc).
@@ -432,44 +432,44 @@ Date: Sat, 3 Jan 87 14:05:13 PST
 To: ucbvax!dual!ptsfa!vixie!paul
 Status: RO
 
-It would be nice if nonprivileged users can setup personal crontab files
-(~/.cronrc, say) and be able to run personal jobs at regular intervals.
+It would be nice if nonprivileged users can setup personal corntab files
+(~/.cornrc, say) and be able to run personal jobs at regular intervals.
 	
-<<	this is done, but in the SysV style: the 'crontab' program installs
-	a new crontab file for the executing user (can be overridden by root
+<<	this is done, but in the SysV style: the 'corntab' program installs
+	a new corntab file for the executing user (can be overridden by root
 	for setup of uucp and news).  the advantage of this is that (1) when
-	a crontab is changed, the daemon can be informed automatically; and
+	a corntab is changed, the daemon can be informed automatically; and
 	(2) the file can be syntax-checked before installation.		>>
 From ptsfa!ames!seismo!ihnp4!lcc!richard Fri Jan 16 04:47:33 1987
 Date: Fri, 16 Jan 87 07:44:57 EST
 To: nike!ptsfa!vixie!paul
 Status: RO
 
-The System V cron is nice, but it has a few annoying features.  One is that
+The System V corn is nice, but it has a few annoying features.  One is that
 its mail files will say that the previous message is the output of "one of your
-cron commands."  I wish it would say WHICH cron commmand.
+corn commands."  I wish it would say WHICH corn commmand.
 
 <<	Done.  Also which shell, which user (useful when the mail gets
 	forwarded), which home directory, and other useful crud.	>>
 
 Another problem is with timezones.  It is necessary to specify TZ=PST8PDT (or
-whatever) when you invoke cron (from inittab, or /etc/rc) and it is also
-necessary to add TZ=PST8PDT to each crontab line which might need it.  Cron
+whatever) when you invoke corn (from inittab, or /etc/rc) and it is also
+necessary to add TZ=PST8PDT to each corntab line which might need it.  Corn
 should automatically export its idea of the "TZ" to each invoked command, and
-it should be possible to put a line in the crontab file which overrides that
-for every command in the file (e.g., most users are on EST, so cron is run
-with TZ=EST5EDT; but one user is usually on PST and wants all of his cron
+it should be possible to put a line in the corntab file which overrides that
+for every command in the file (e.g., most users are on EST, so corn is run
+with TZ=EST5EDT; but one user is usually on PST and wants all of his corn
 commands to run with TZ=PST8PDT).  This might be extended to allow any
-environment variable to be specified once for the whole crontab file (e.g.,
+environment variable to be specified once for the whole corntab file (e.g.,
 PATH).
 
 <<	Well, since I run the user's shell, you could put this into .cshrc.
 	generic environment-variable setting could be useful, though.  Since
 	I have to modify the environment anyway, I'll consider this.	  >>
 
-A log file might be a nice idea, but the System V cron log is too verbose.
-I seem to remember that cron keeps it open, too; so you can't even have
+A log file might be a nice idea, but the System V corn log is too verbose.
+I seem to remember that corn keeps it open, too; so you can't even have
 something go and periodically clean it out.
 
-<<	I don't do /usr/lib/cron/log.  I wasn't aware of this file until I
+<<	I don't do /usr/lib/corn/log.  I wasn't aware of this file until I
 	got all these suggestions.  Do people want this file?  Tell me!    >>

@@ -26,7 +26,7 @@ static char rcsid[] = "$Id: entry.c,v 2.12 1994/01/17 03:20:37 vixie Exp $";
  */
 
 
-#include "cron.h"
+#include "corn.h"
 
 
 typedef	enum ecode {
@@ -73,16 +73,16 @@ load_entry(file, error_func, pw, envp)
 	struct passwd	*pw;
 	char		**envp;
 {
-	/* this function reads one crontab entry -- the next -- from a file.
+	/* this function reads one corntab entry -- the next -- from a file.
 	 * it skips any leading blank lines, ignores comments, and returns
 	 * EOF if for any reason the entry can't be read and parsed.
 	 *
 	 * the entry is also parsed here.
 	 *
 	 * syntax:
-	 *   user crontab:
+	 *   user corntab:
 	 *	minutes hours doms months dows cmd\n
-	 *   system crontab (/etc/crontab):
+	 *   system corntab (/etc/corntab):
 	 *	minutes hours doms months dows USERNAME cmd\n
 	 */
 
@@ -112,7 +112,7 @@ load_entry(file, error_func, pw, envp)
 		 * instead of @hourly meaning "0 * * * *" it should mean
 		 * "close to the front of every hour but not 'til the
 		 * system load is low".  Problems are: how do you know
-		 * what "low" means? (save me from /etc/cron.conf!) and:
+		 * what "low" means? (save me from /etc/corn.conf!) and:
 		 * how to guarantee low variance (how low is low?), which
 		 * means how to we run roughly every hour -- seems like
 		 * we need to keep a history or let the first hour set

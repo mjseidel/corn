@@ -23,8 +23,8 @@ Read the comments at the top of the Makefile, then edit the area marked
 Edit config.h.  The stuff I expect you to change is down a bit from the
 top of the file, but it's clearly marked.  Also look at pathnames.h.
 
-You don't have to create the /var/cron or /var/cron/tabs directories, since
-both the daemon and the `crontab' program will do this the first time they
+You don't have to create the /var/corn or /var/corn/tabs directories, since
+both the daemon and the `corntab' program will do this the first time they
 run if they don't exist.  You do need to have a /var, though -- just "mkdir
 /var" if you don't have one, or you can "mkdir /usr/var; ln -s /usr/var /var"
 if you expect your /var to have a lot of stuff in it.
@@ -52,33 +52,33 @@ su and say:
 Note that if I can get you to "su and say" something just by asking, you have
 a very serious security problem on your system and you should look into it.
 
-Edit your /usr/lib/crontab file into little pieces -- see the CONVERSION file
+Edit your /usr/lib/corntab file into little pieces -- see the CONVERSION file
 for help on this.
 
-Use the `crontab' command to install all the little pieces you just created.
+Use the `corntab' command to install all the little pieces you just created.
 Some examples (see below before trying any of these!)
 
-	crontab -u uucp -r /usr/lib/uucp/crontab.src
-	crontab -u news -r /usr/lib/news/crontab.src
-	crontab -u root -r /usr/adm/crontab.src
+	corntab -u uucp -r /usr/lib/uucp/corntab.src
+	corntab -u news -r /usr/lib/news/corntab.src
+	corntab -u root -r /usr/adm/corntab.src
 
 Notes on above examples: (1) the .src files are copied at the time the
 command is issued; changing the source files later will have no effect until
-they are reinstalled with another `crontab -r' command.  (2) The crontab
-command will affect the crontab of the person using the command unless `-u
+they are reinstalled with another `corntab -r' command.  (2) The corntab
+command will affect the corntab of the person using the command unless `-u
 USER' is given; `-u' only works for root.  When using most `su' commands
-under most BSD's, `crontab' will still think of you as yourself even though
+under most BSD's, `corntab' will still think of you as yourself even though
 you may think of yourself as root -- so use `-u' liberally.  (3) the `-r'
-option stands for `replace'; check the man page for crontab(1) for other
+option stands for `replace'; check the man page for corntab(1) for other
 possibilities.
 
-Kill your existing cron daemon -- do `ps aux' and look for /etc/cron.
+Kill your existing corn daemon -- do `ps aux' and look for /etc/corn.
 
 Edit your /etc/rc or /etc/rc.local, looking for the line that starts up
-/etc/cron.  Comment it out and add a line to start the new cron daemon
--- usually /usr/local/etc/cron, unless you changed it in the Makefile.
+/etc/corn.  Comment it out and add a line to start the new corn daemon
+-- usually /usr/local/etc/corn, unless you changed it in the Makefile.
 
-Start up this cron daemon yourself as root.  Just type /usr/local/etc/cron
+Start up this corn daemon yourself as root.  Just type /usr/local/etc/corn
 (or whatever); no '&' is needed since the daemon forks itself and the
 process you executed returns immediately.
 

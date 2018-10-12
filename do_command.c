@@ -20,7 +20,7 @@ static char rcsid[] = "$Id: do_command.c,v 2.12 1994/01/15 20:43:43 vixie Exp $"
 #endif
 
 
-#include "cron.h"
+#include "corn.h"
 #include <sys/signal.h>
 #if defined(sequent)
 # include <sys/universe.h>
@@ -43,7 +43,7 @@ do_command(e, u)
 		getpid(), e->cmd, u->name, e->uid, e->gid))
 
 	/* fork to become asynchronous -- parent process is done immediately,
-	 * and continues to run the normal cron code, which means return to
+	 * and continues to run the normal corn code, which means return to
 	 * tick().  the child and grandchild don't leave this function, alive.
 	 *
 	 * vfork() is unsuitable, since we have much to do, and the parent
@@ -104,7 +104,7 @@ child_process(e, u)
 	(void) signal(SIGCHLD, SIG_IGN);
 #else
 	/* on system-V systems, we are ignoring SIGCLD.  we have to stop
-	 * ignoring it now or the wait() in cron_pclose() won't work.
+	 * ignoring it now or the wait() in corn_pclose() won't work.
 	 * because of this, we have to wait() for our children here, as well.
 	 */
 	(void) signal(SIGCLD, SIG_DFL);
@@ -240,7 +240,7 @@ child_process(e, u)
 
 	children++;
 
-	/* middle process, child of original cron, parent of process running
+	/* middle process, child of original corn, parent of process running
 	 * the user's command.
 	 */
 
@@ -254,7 +254,7 @@ child_process(e, u)
 
 	/*
 	 * write, to the pipe connected to child's stdin, any input specified
-	 * after a % in the crontab entry.  while we copy, convert any
+	 * after a % in the corntab entry.  while we copy, convert any
 	 * additional %'s to newlines.  when done, if some characters were
 	 * written and the last one wasn't a newline, write a newline.
 	 *
@@ -319,7 +319,7 @@ child_process(e, u)
 	/*
 	 * read output from the grandchild.  it's stderr has been redirected to
 	 * it's stdout, which has been redirected to our pipe.  if there is any
-	 * output, we'll be mailing it to the user whose crontab this is...
+	 * output, we'll be mailing it to the user whose corntab this is...
 	 * when the grandchild exits, we'll get EOF.
 	 */
 
@@ -368,13 +368,13 @@ child_process(e, u)
 				(void) gethostname(hostname, MAXHOSTNAMELEN);
 				(void) sprintf(mailcmd, MAILARGS,
 					       MAILCMD, mailto);
-				if (!(mail = cron_popen(mailcmd, "w"))) {
+				if (!(mail = corn_popen(mailcmd, "w"))) {
 					perror(MAILCMD);
 					(void) _exit(ERROR_EXIT);
 				}
-				fprintf(mail, "From: root (Cron Daemon)\n");
+				fprintf(mail, "From: root (Corn Daemon)\n");
 				fprintf(mail, "To: %s\n", mailto);
-				fprintf(mail, "Subject: Cron <%s@%s> %s\n",
+				fprintf(mail, "Subject: Corn <%s@%s> %s\n",
 					usernm, first_word(hostname, "."),
 					e->cmd);
 # if defined(MAIL_DATE)
@@ -382,7 +382,7 @@ child_process(e, u)
 					arpadate(&TargetTime));
 # endif /* MAIL_DATE */
 				for (env = e->envp;  *env;  env++)
-					fprintf(mail, "X-Cron-Env: <%s>\n",
+					fprintf(mail, "X-Corn-Env: <%s>\n",
 						*env);
 				fprintf(mail, "\n");
 
@@ -415,7 +415,7 @@ child_process(e, u)
 				 * it (the grandchild) is likely to exit
 				 * after closing its stdout.
 				 */
-				status = cron_pclose(mail);
+				status = corn_pclose(mail);
 			}
 
 			/* if there was output and we could not mail it,

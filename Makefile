@@ -15,7 +15,7 @@
 # * Paul Vixie          <paul@vix.com>          uunet!decwrl!vixie!paul
 # */
 
-# Makefile for vixie's cron
+# Makefile for vixie's corn
 #
 # $Id: Makefile,v 2.9 1994/01/15 20:43:43 vixie Exp $
 #
@@ -31,7 +31,7 @@
 #	this package needs getopt(3), bitstring(3), and BSD install(8).
 #
 #	the configurable stuff in this makefile consists of compilation
-#	options (use -O, cron runs forever) and destination directories.
+#	options (use -O, corn runs forever) and destination directories.
 #	SHELL is for the 'augumented make' systems where 'make' imports
 #	SHELL from the environment and then uses it to run its commands.
 #	if your environment SHELL variable is /bin/csh, make goes real
@@ -85,20 +85,20 @@ SHELL		=	/bin/sh
 CFLAGS		=	$(OPTIM) $(INCLUDE) $(COMPAT) $(DEFS)
 
 INFOS		=	README CHANGES FEATURES INSTALL CONVERSION THANKS MAIL
-MANPAGES	=	bitstring.3 crontab.5 crontab.1 cron.8 putman.sh
-HEADERS		=	bitstring.h cron.h config.h pathnames.h \
+MANPAGES	=	bitstring.3 corntab.5 corntab.1 corn.8 putman.sh
+HEADERS		=	bitstring.h corn.h config.h pathnames.h \
 			externs.h compat.h
-SOURCES		=	cron.c crontab.c database.c do_command.c entry.c \
+SOURCES		=	corn.c corntab.c database.c do_command.c entry.c \
 			env.c job.c user.c popen.c misc.c compat.c
 SHAR_SOURCE	=	$(INFOS) $(MANPAGES) Makefile $(HEADERS) $(SOURCES)
-LINT_CRON	=	cron.c database.c user.c entry.c compat.c \
+LINT_CRON	=	corn.c database.c user.c entry.c compat.c \
 			misc.c job.c do_command.c env.c popen.c
-LINT_CRONTAB	=	crontab.c misc.c entry.c env.c compat.c
-CRON_OBJ	=	cron.o database.o user.o entry.o job.o do_command.o \
+LINT_CRONTAB	=	corntab.c misc.c entry.c env.c compat.c
+CRON_OBJ	=	corn.o database.o user.o entry.o job.o do_command.o \
 			misc.o env.o popen.o compat.o
-CRONTAB_OBJ	=	crontab.o misc.o entry.o env.o compat.o
+CRONTAB_OBJ	=	corntab.o misc.o entry.o env.o compat.o
 
-all		:	cron crontab
+all		:	corn corntab
 
 lint		:
 			lint $(LINTFLAGS) $(LINT_CRON) $(LIBS) \
@@ -106,23 +106,23 @@ lint		:
 			lint $(LINTFLAGS) $(LINT_CRONTAB) $(LIBS) \
 			|grep -v "constant argument to NOT" 2>&1
 
-cron		:	$(CRON_OBJ)
-			$(CC) $(LDFLAGS) -o cron $(CRON_OBJ) $(LIBS)
+corn		:	$(CRON_OBJ)
+			$(CC) $(LDFLAGS) -o corn $(CRON_OBJ) $(LIBS)
 
-crontab		:	$(CRONTAB_OBJ)
-			$(CC) $(LDFLAGS) -o crontab $(CRONTAB_OBJ) $(LIBS)
+corntab		:	$(CRONTAB_OBJ)
+			$(CC) $(LDFLAGS) -o corntab $(CRONTAB_OBJ) $(LIBS)
 
 install		:	all
-			$(INSTALL) -c -m  111 -o root -s cron    $(DESTSBIN)/
-			$(INSTALL) -c -m 4111 -o root -s crontab $(DESTBIN)/
-			sh putman.sh crontab.1 $(DESTMAN)
-			sh putman.sh cron.8    $(DESTMAN)
-			sh putman.sh crontab.5 $(DESTMAN)
+			$(INSTALL) -c -m  111 -o root -s corn    $(DESTSBIN)/
+			$(INSTALL) -c -m 4111 -o root -s corntab $(DESTBIN)/
+			sh putman.sh corntab.1 $(DESTMAN)
+			sh putman.sh corn.8    $(DESTMAN)
+			sh putman.sh corntab.5 $(DESTMAN)
 
-clean		:;	rm -f *.o cron crontab a.out core tags *~ #*
+clean		:;	rm -f *.o corn corntab a.out core tags *~ #*
 
 kit		:	$(SHAR_SOURCE)
 			makekit -m -s99k $(SHAR_SOURCE)
 
-$(CRON_OBJ)	:	cron.h compat.h config.h externs.h pathnames.h Makefile
-$(CRONTAB_OBJ)	:	cron.h compat.h config.h externs.h pathnames.h Makefile
+$(CRON_OBJ)	:	corn.h compat.h config.h externs.h pathnames.h Makefile
+$(CRONTAB_OBJ)	:	corn.h compat.h config.h externs.h pathnames.h Makefile

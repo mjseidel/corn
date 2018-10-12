@@ -28,7 +28,7 @@ static char rcsid[] = "$Id: popen.c,v 1.5 1994/01/15 20:43:43 vixie Exp $";
 static char sccsid[] = "@(#)popen.c	5.7 (Berkeley) 2/14/89";
 #endif /* not lint */
 
-#include "cron.h"
+#include "corn.h"
 #include <sys/signal.h>
 
 
@@ -43,7 +43,7 @@ static PID_T *pids;
 static int fds;
 
 FILE *
-cron_popen(program, type)
+corn_popen(program, type)
 	char *program, *type;
 {
 	register char *cp;
@@ -142,7 +142,7 @@ pfree:
 }
 
 int
-cron_pclose(iop)
+corn_pclose(iop)
 	FILE *iop;
 {
 	register int fdes;

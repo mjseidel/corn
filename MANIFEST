@@ -14,12 +14,12 @@
  compat.c                   1	
  compat.h                   1	
  config.h                   1	
- cron.8                     1	
- cron.c                     1	
- cron.h                     1	
- crontab.1                  1	
- crontab.5                  1	
- crontab.c                  2	
+ corn.8                     1	
+ corn.c                     1	
+ corn.h                     1	
+ corntab.1                  1	
+ corntab.5                  1	
+ corntab.c                  2	
  database.c                 1	
  do_command.c               2	
  entry.c                    2	

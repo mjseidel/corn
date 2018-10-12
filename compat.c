@@ -24,7 +24,7 @@ static char rcsid[] = "$Id: compat.c,v 1.6 1994/01/15 20:43:43 vixie Exp $";
  */
 
 
-#include "cron.h"
+#include "corn.h"
 #ifdef NEED_GETDTABLESIZE
 # include <limits.h>
 #endif

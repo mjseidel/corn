@@ -15,9 +15,9 @@
  * Paul Vixie          <paul@vix.com>          uunet!decwrl!vixie!paul
  */
 
-/* cron.h - header for vixie's cron
+/* corn.h - header for vixie's corn
  *
- * $Id: cron.h,v 2.10 1994/01/15 20:43:43 vixie Exp $
+ * $Id: corn.h,v 2.10 1994/01/15 20:43:43 vixie Exp $
  *
  * vix 14nov88 [rest of log is in RCS]
  * vix 14jan87 [0 or 7 can be sunday; thanks, mwm@berkeley]
@@ -139,10 +139,10 @@
 #define	LAST_DOW	7
 #define	DOW_COUNT	(LAST_DOW - FIRST_DOW + 1)
 
-			/* each user's crontab will be held as a list of
+			/* each user's corntab will be held as a list of
 			 * the following structure.
 			 *
-			 * These are the cron commands.
+			 * These are the corn commands.
 			 */
 
 typedef	struct _entry {
@@ -162,35 +162,35 @@ typedef	struct _entry {
 #define	WHEN_REBOOT	0x04
 } entry;
 
-			/* the crontab database will be a list of the
+			/* the corntab database will be a list of the
 			 * following structure, one element per user
 			 * plus one for the system.
 			 *
-			 * These are the crontabs.
+			 * These are the corntabs.
 			 */
 
 typedef	struct _user {
 	struct _user	*next, *prev;	/* links */
 	char		*name;
-	time_t		mtime;		/* last modtime of crontab */
-	entry		*crontab;	/* this person's crontab */
+	time_t		mtime;		/* last modtime of corntab */
+	entry		*corntab;	/* this person's corntab */
 } user;
 
-typedef	struct _cron_db {
+typedef	struct _corn_db {
 	user		*head, *tail;	/* links */
 	time_t		mtime;		/* last modtime on spooldir */
-} cron_db;
+} corn_db;
 
 
-void		set_cron_uid __P((void)),
-		set_cron_cwd __P((void)),
-		load_database __P((cron_db *)),
+void		set_corn_uid __P((void)),
+		set_corn_cwd __P((void)),
+		load_database __P((corn_db *)),
 		open_logfile __P((void)),
 		sigpipe_func __P((void)),
 		job_add __P((entry *, user *)),
 		do_command __P((entry *, user *)),
-		link_user __P((cron_db *, user *)),
-		unlink_user __P((cron_db *, user *)),
+		link_user __P((corn_db *, user *)),
+		unlink_user __P((corn_db *, user *)),
 		free_user __P((user *)),
 		env_free __P((char **)),
 		unget_char __P((int, FILE *)),
@@ -206,7 +206,7 @@ int		job_runqueue __P((void)),
 		get_string __P((char *, int, FILE *, char *)),
 		swap_uids __P((void)),
 		load_env __P((char *, FILE *)),
-		cron_pclose __P((FILE *)),
+		corn_pclose __P((FILE *)),
 		strcmp_until __P((char *, char *, int)),
 		allowed __P((char *)),
 		strdtb __P((char *));
@@ -220,12 +220,12 @@ char		*env_get __P((char *, char **)),
 		**env_set __P((char **, char *));
 
 user		*load_user __P((int, struct passwd *, char *)),
-		*find_user __P((cron_db *, char *));
+		*find_user __P((corn_db *, char *));
 
 entry		*load_entry __P((FILE *, void (*)(),
 				 struct passwd *, char **));
 
-FILE		*cron_popen __P((char *, char *));
+FILE		*corn_popen __P((char *, char *));
 
 
 				/* in the C tradition, we only create

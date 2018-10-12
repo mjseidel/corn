@@ -24,18 +24,18 @@
 #endif /*BSD*/
 
 #ifndef CRONDIR
-			/* CRONDIR is where crond(8) and crontab(1) both chdir
+			/* CRONDIR is where cornd(8) and corntab(1) both chdir
 			 * to; SPOOL_DIR, ALLOW_FILE, DENY_FILE, and LOG_FILE
 			 * are all relative to this directory.
 			 */
-#define CRONDIR		"/var/cron"
+#define CRONDIR		"/var/corn"
 #endif
 
-			/* SPOOLDIR is where the crontabs live.
+			/* SPOOLDIR is where the corntabs live.
 			 * This directory will have its modtime updated
-			 * whenever crontab(1) changes a crontab; this is
-			 * the signal for crond(8) to look at each individual
-			 * crontab file and reload those whose modtimes are
+			 * whenever corntab(1) changes a corntab; this is
+			 * the signal for cornd(8) to look at each individual
+			 * corntab file and reload those whose modtimes are
 			 * newer than they were last time around (or which
 			 * didn't exist last time around...)
 			 */
@@ -58,10 +58,10 @@
 #else
 # define PIDDIR "/etc/"
 #endif
-#define PIDFILE		"%scron.pid"
+#define PIDFILE		"%scorn.pid"
 
-			/* 4.3BSD-style crontab */
-#define SYSCRONTAB	"/etc/crontab"
+			/* 4.3BSD-style corntab */
+#define SYSCRONTAB	"/etc/corntab"
 
 			/* what editor to use if no EDITOR or VISUAL
 			 * environment variable specified.

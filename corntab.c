@@ -16,10 +16,10 @@
  */
 
 #if !defined(lint) && !defined(LINT)
-static char rcsid[] = "$Id: crontab.c,v 2.13 1994/01/17 03:20:37 vixie Exp $";
+static char rcsid[] = "$Id: corntab.c,v 2.13 1994/01/17 03:20:37 vixie Exp $";
 #endif
 
-/* crontab - install and manage per-user crontab files
+/* corntab - install and manage per-user corntab files
  * vix 02may87 [RCS has the rest of the log]
  * vix 26jan87 [original]
  */
@@ -28,7 +28,7 @@ static char rcsid[] = "$Id: crontab.c,v 2.13 1994/01/17 03:20:37 vixie Exp $";
 #define	MAIN_PROGRAM
 
 
-#include "cron.h"
+#include "corn.h"
 #include <errno.h>
 #include <fcntl.h>
 #include <sys/file.h>
@@ -57,7 +57,7 @@ static char	*Options[] = { "???", "list", "delete", "edit", "replace" };
 static	PID_T		Pid;
 static	char		User[MAX_UNAME], RealUser[MAX_UNAME];
 static	char		Filename[MAX_FNAME];
-static	FILE		*NewCrontab;
+static	FILE		*NewCorntab;
 static	int		CheckErrorCount;
 static	enum opt_t	Option;
 static	struct passwd	*pw;
@@ -78,9 +78,9 @@ usage(msg)
 	fprintf(stderr, "usage:\t%s [-u user] file\n", ProgramName);
 	fprintf(stderr, "\t%s [-u user] { -e | -l | -r }\n", ProgramName);
 	fprintf(stderr, "\t\t(default operation is replace, per 1003.2)\n");
-	fprintf(stderr, "\t-e\t(edit user's crontab)\n");
-	fprintf(stderr, "\t-l\t(list user's crontab)\n");
-	fprintf(stderr, "\t-r\t(delete user's crontab)\n");
+	fprintf(stderr, "\t-e\t(edit user's corntab)\n");
+	fprintf(stderr, "\t-l\t(list user's corntab)\n");
+	fprintf(stderr, "\t-r\t(delete user's corntab)\n");
 	exit(ERROR_EXIT);
 }
 
@@ -103,14 +103,14 @@ main(argc, argv)
 	setlinebuf(stderr);
 #endif
 	parse_args(argc, argv);		/* sets many globals, opens a file */
-	set_cron_uid();
-	set_cron_cwd();
+	set_corn_uid();
+	set_corn_cwd();
 	if (!allowed(User)) {
 		fprintf(stderr,
 			"You (%s) are not allowed to use this program (%s)\n",
 			User, ProgramName);
-		fprintf(stderr, "See crontab(1) for more information\n");
-		log_it(RealUser, Pid, "AUTH", "crontab command not allowed");
+		fprintf(stderr, "See corntab(1) for more information\n");
+		log_it(RealUser, Pid, "AUTH", "corntab command not allowed");
 		exit(ERROR_EXIT);
 	}
 	exitstatus = OK_EXIT;
@@ -205,11 +205,11 @@ parse_args(argc, argv)
 
 	if (Option == opt_replace) {
 		/* we have to open the file here because we're going to
-		 * chdir(2) into /var/cron before we get around to
+		 * chdir(2) into /var/corn before we get around to
 		 * reading the file.
 		 */
 		if (!strcmp(Filename, "-")) {
-			NewCrontab = stdin;
+			NewCorntab = stdin;
 		} else {
 			/* relinquish the setuid status of the binary during
 			 * the open, lest nonroot users read files they should
@@ -223,7 +223,7 @@ parse_args(argc, argv)
 				perror("swapping uids");
 				exit(ERROR_EXIT);
 			}
-			if (!(NewCrontab = fopen(Filename, "r"))) {
+			if (!(NewCorntab = fopen(Filename, "r"))) {
 				perror(Filename);
 				exit(ERROR_EXIT);
 			}
@@ -249,7 +249,7 @@ list_cmd() {
 	(void) sprintf(n, CRON_TAB(User));
 	if (!(f = fopen(n, "r"))) {
 		if (errno == ENOENT)
-			fprintf(stderr, "no crontab for %s\n", User);
+			fprintf(stderr, "no corntab for %s\n", User);
 		else
 			perror(n);
 		exit(ERROR_EXIT);
@@ -272,7 +272,7 @@ delete_cmd() {
 	(void) sprintf(n, CRON_TAB(User));
 	if (unlink(n)) {
 		if (errno == ENOENT)
-			fprintf(stderr, "no crontab for %s\n", User);
+			fprintf(stderr, "no corntab for %s\n", User);
 		else
 			perror(n);
 		exit(ERROR_EXIT);
@@ -307,7 +307,7 @@ edit_cmd() {
 			perror(n);
 			exit(ERROR_EXIT);
 		}
-		fprintf(stderr, "no crontab for %s - using an empty one\n",
+		fprintf(stderr, "no corntab for %s - using an empty one\n",
 			User);
 		if (!(f = fopen("/dev/null", "r"))) {
 			perror("/dev/null");
@@ -315,7 +315,7 @@ edit_cmd() {
 		}
 	}
 
-	(void) sprintf(Filename, "/tmp/crontab.%d", Pid);
+	(void) sprintf(Filename, "/tmp/corntab.%d", Pid);
 	if (-1 == (t = open(Filename, O_CREAT|O_EXCL|O_RDWR, 0600))) {
 		perror(Filename);
 		goto fatal;
@@ -328,7 +328,7 @@ edit_cmd() {
 		perror("fchown");
 		goto fatal;
 	}
-	if (!(NewCrontab = fdopen(t, "r+"))) {
+	if (!(NewCorntab = fdopen(t, "r+"))) {
 		perror("fdopen");
 		goto fatal;
 	}
@@ -342,7 +342,7 @@ edit_cmd() {
 		if (EOF == ch)
 			break;
 		if ('#' != ch) {
-			putc(ch, NewCrontab);
+			putc(ch, NewCorntab);
 			break;
 		}
 		while (EOF != (ch = get_char(f)))
@@ -352,20 +352,20 @@ edit_cmd() {
 			break;
 	}
 
-	/* copy the rest of the crontab (if any) to the temp file.
+	/* copy the rest of the corntab (if any) to the temp file.
 	 */
 	if (EOF != ch)
 		while (EOF != (ch = get_char(f)))
-			putc(ch, NewCrontab);
+			putc(ch, NewCorntab);
 	fclose(f);
-	if (fflush(NewCrontab) < OK) {
+	if (fflush(NewCorntab) < OK) {
 		perror(Filename);
 		exit(ERROR_EXIT);
 	}
  again:
-	rewind(NewCrontab);
-	if (ferror(NewCrontab)) {
-		fprintf(stderr, "%s: error while writing new crontab to %s\n",
+	rewind(NewCorntab);
+	if (ferror(NewCorntab)) {
+		fprintf(stderr, "%s: error while writing new corntab to %s\n",
 			ProgramName, Filename);
  fatal:		unlink(Filename);
 		exit(ERROR_EXIT);
@@ -443,11 +443,11 @@ edit_cmd() {
 		goto fatal;
 	}
 	if (mtime == statbuf.st_mtime) {
-		fprintf(stderr, "%s: no changes made to crontab\n",
+		fprintf(stderr, "%s: no changes made to corntab\n",
 			ProgramName);
 		goto remove;
 	}
-	fprintf(stderr, "%s: installing new crontab\n", ProgramName);
+	fprintf(stderr, "%s: installing new corntab\n", ProgramName);
 	switch (replace_cmd()) {
 	case 0:
 		break;
@@ -509,19 +509,19 @@ replace_cmd() {
 	 */
 	fprintf(tmp, "# DO NOT EDIT THIS FILE - edit the master and reinstall.\n");
 	fprintf(tmp, "# (%s installed on %-24.24s)\n", Filename, ctime(&now));
-	fprintf(tmp, "# (Cron version -- %s)\n", rcsid);
+	fprintf(tmp, "# (Corn version -- %s)\n", rcsid);
 
-	/* copy the crontab to the tmp
+	/* copy the corntab to the tmp
 	 */
-	rewind(NewCrontab);
+	rewind(NewCorntab);
 	Set_LineNum(1)
-	while (EOF != (ch = get_char(NewCrontab)))
+	while (EOF != (ch = get_char(NewCorntab)))
 		putc(ch, tmp);
 	ftruncate(fileno(tmp), ftell(tmp));
 	fflush(tmp);  rewind(tmp);
 
 	if (ferror(tmp)) {
-		fprintf(stderr, "%s: error while writing new crontab to %s\n",
+		fprintf(stderr, "%s: error while writing new corntab to %s\n",
 			ProgramName, tn);
 		fclose(tmp);  unlink(tn);
 		return (-2);
@@ -552,7 +552,7 @@ replace_cmd() {
 	}
 
 	if (CheckErrorCount != 0) {
-		fprintf(stderr, "errors in crontab file, can't install.\n");
+		fprintf(stderr, "errors in corntab file, can't install.\n");
 		fclose(tmp);  unlink(tn);
 		return (-1);
 	}
@@ -610,13 +610,13 @@ poke_daemon() {
 	(void) gettimeofday(&tvs[0], &tz);
 	tvs[1] = tvs[0];
 	if (utimes(SPOOL_DIR, tvs) < OK) {
-		fprintf(stderr, "crontab: can't update mtime on spooldir\n");
+		fprintf(stderr, "corntab: can't update mtime on spooldir\n");
 		perror(SPOOL_DIR);
 		return;
 	}
 #else
 	if (utime(SPOOL_DIR, NULL) < OK) {
-		fprintf(stderr, "crontab: can't update mtime on spooldir\n");
+		fprintf(stderr, "corntab: can't update mtime on spooldir\n");
 		perror(SPOOL_DIR);
 		return;
 	}

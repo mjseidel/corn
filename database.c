@@ -23,7 +23,7 @@ static char rcsid[] = "$Id: database.c,v 2.8 1994/01/15 20:43:43 vixie Exp $";
  */
 
 
-#include "cron.h"
+#include "corn.h"
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <sys/file.h>
@@ -32,20 +32,20 @@ static char rcsid[] = "$Id: database.c,v 2.8 1994/01/15 20:43:43 vixie Exp $";
 #define TMAX(a,b) ((a)>(b)?(a):(b))
 
 
-static	void		process_crontab __P((char *, char *, char *,
+static	void		process_corntab __P((char *, char *, char *,
 					     struct stat *,
-					     cron_db *, cron_db *));
+					     corn_db *, corn_db *));
 
 
 void
 load_database(old_db)
-	cron_db		*old_db;
+	corn_db		*old_db;
 {
 	DIR		*dir;
 	struct stat	statbuf;
-	struct stat	syscron_stat;
+	struct stat	syscorn_stat;
 	DIR_T   	*dp;
-	cron_db		new_db;
+	corn_db		new_db;
 	user		*u, *nu;
 
 	Debug(DLOAD, ("[%d] load_database()\n", getpid()))
@@ -59,10 +59,10 @@ load_database(old_db)
 		(void) exit(ERROR_EXIT);
 	}
 
-	/* track system crontab file
+	/* track system corntab file
 	 */
-	if (stat(SYSCRONTAB, &syscron_stat) < OK)
-		syscron_stat.st_mtime = 0;
+	if (stat(SYSCRONTAB, &syscorn_stat) < OK)
+		syscorn_stat.st_mtime = 0;
 
 	/* if spooldir's mtime has not changed, we don't need to fiddle with
 	 * the database.
@@ -71,7 +71,7 @@ load_database(old_db)
 	 * so is guaranteed to be different than the stat() mtime the first
 	 * time this function is called.
 	 */
-	if (old_db->mtime == TMAX(statbuf.st_mtime, syscron_stat.st_mtime)) {
+	if (old_db->mtime == TMAX(statbuf.st_mtime, syscorn_stat.st_mtime)) {
 		Debug(DLOAD, ("[%d] spool dir mtime unch, no load needed.\n",
 			      getpid()))
 		return;
@@ -80,14 +80,14 @@ load_database(old_db)
 	/* something's different.  make a new database, moving unchanged
 	 * elements from the old database, reloading elements that have
 	 * actually changed.  Whatever is left in the old database when
-	 * we're done is chaff -- crontabs that disappeared.
+	 * we're done is chaff -- corntabs that disappeared.
 	 */
-	new_db.mtime = TMAX(statbuf.st_mtime, syscron_stat.st_mtime);
+	new_db.mtime = TMAX(statbuf.st_mtime, syscorn_stat.st_mtime);
 	new_db.head = new_db.tail = NULL;
 
-	if (syscron_stat.st_mtime) {
-		process_crontab("root", "*system*",
-				SYSCRONTAB, &syscron_stat,
+	if (syscorn_stat.st_mtime) {
+		process_corntab("root", "*system*",
+				SYSCRONTAB, &syscorn_stat,
 				&new_db, old_db);
 	}
 
@@ -115,7 +115,7 @@ load_database(old_db)
 		(void) strcpy(fname, dp->d_name);
 		sprintf(tabname, CRON_TAB(fname));
 
-		process_crontab(fname, fname, tabname,
+		process_corntab(fname, fname, tabname,
 				&statbuf, &new_db, old_db);
 	}
 	closedir(dir);
@@ -145,7 +145,7 @@ load_database(old_db)
 
 void
 link_user(db, u)
-	cron_db	*db;
+	corn_db	*db;
 	user	*u;
 {
 	if (db->head == NULL)
@@ -160,7 +160,7 @@ link_user(db, u)
 
 void
 unlink_user(db, u)
-	cron_db	*db;
+	corn_db	*db;
 	user	*u;
 {
 	if (u->prev == NULL)
@@ -177,7 +177,7 @@ unlink_user(db, u)
 
 user *
 find_user(db, name)
-	cron_db	*db;
+	corn_db	*db;
 	char	*name;
 {
 	char	*env_get();
@@ -191,48 +191,48 @@ find_user(db, name)
 
 
 static void
-process_crontab(uname, fname, tabname, statbuf, new_db, old_db)
+process_corntab(uname, fname, tabname, statbuf, new_db, old_db)
 	char		*uname;
 	char		*fname;
 	char		*tabname;
 	struct stat	*statbuf;
-	cron_db		*new_db;
-	cron_db		*old_db;
+	corn_db		*new_db;
+	corn_db		*old_db;
 {
 	struct passwd	*pw = NULL;
-	int		crontab_fd = OK - 1;
+	int		corntab_fd = OK - 1;
 	user		*u;
 
 	if (strcmp(fname, "*system*") && !(pw = getpwnam(uname))) {
 		/* file doesn't have a user in passwd file.
 		 */
 		log_it(fname, getpid(), "ORPHAN", "no passwd entry");
-		goto next_crontab;
+		goto next_corntab;
 	}
 
-	if ((crontab_fd = open(tabname, O_RDONLY, 0)) < OK) {
-		/* crontab not accessible?
+	if ((corntab_fd = open(tabname, O_RDONLY, 0)) < OK) {
+		/* corntab not accessible?
 		 */
 		log_it(fname, getpid(), "CAN'T OPEN", tabname);
-		goto next_crontab;
+		goto next_corntab;
 	}
 
-	if (fstat(crontab_fd, statbuf) < OK) {
+	if (fstat(corntab_fd, statbuf) < OK) {
 		log_it(fname, getpid(), "FSTAT FAILED", tabname);
-		goto next_crontab;
+		goto next_corntab;
 	}
 
 	Debug(DLOAD, ("\t%s:", fname))
 	u = find_user(old_db, fname);
 	if (u != NULL) {
-		/* if crontab has not changed since we last read it
+		/* if corntab has not changed since we last read it
 		 * in, then we can just use our existing entry.
 		 */
 		if (u->mtime == statbuf->st_mtime) {
 			Debug(DLOAD, (" [no change, using old data]"))
 			unlink_user(old_db, u);
 			link_user(new_db, u);
-			goto next_crontab;
+			goto next_corntab;
 		}
 
 		/* before we fall through to the code that will reload
@@ -240,22 +240,22 @@ process_crontab(uname, fname, tabname, statbuf, new_db, old_db)
 		 * the old database.  This is more a point of memory
 		 * efficiency than anything else, since all leftover
 		 * users will be deleted from the old database when
-		 * we finish with the crontab...
+		 * we finish with the corntab...
 		 */
 		Debug(DLOAD, (" [delete old data]"))
 		unlink_user(old_db, u);
 		free_user(u);
 		log_it(fname, getpid(), "RELOAD", tabname);
 	}
-	u = load_user(crontab_fd, pw, fname);
+	u = load_user(corntab_fd, pw, fname);
 	if (u != NULL) {
 		u->mtime = statbuf->st_mtime;
 		link_user(new_db, u);
 	}
 
-next_crontab:
-	if (crontab_fd >= OK) {
+next_corntab:
+	if (corntab_fd >= OK) {
 		Debug(DLOAD, (" [done]\n"))
-		close(crontab_fd);
+		close(corntab_fd);
 	}
 }

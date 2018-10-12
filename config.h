@@ -15,7 +15,7 @@
  * Paul Vixie          <paul@vix.com>          uunet!decwrl!vixie!paul
  */
 
-/* config.h - configurables for Vixie Cron
+/* config.h - configurables for Vixie Corn
  *
  * $Id: config.h,v 2.6 1994/01/15 20:43:43 vixie Exp $
  */
@@ -37,12 +37,12 @@
 			 * /bin/mail for speed; it makes biff bark but doesn't
 			 * do aliasing.  /usr/lib/sendmail does aliasing but is
 			 * a hog for short messages.  aliasing is not needed
-			 * if you make use of the MAILTO= feature in crontabs.
+			 * if you make use of the MAILTO= feature in corntabs.
 			 * (hint: MAILTO= was added for this reason).
 			 */
 
 #define MAILCMD _PATH_SENDMAIL					/*-*/
-#define MAILARGS "%s -FCronDaemon -odi -oem -or0s %s"		/*-*/
+#define MAILARGS "%s -FCornDaemon -odi -oem -or0s %s"		/*-*/
 			/* -Fx	 = set full-name of sender
 			 * -odi	 = Option Deliverymode Interactive
 			 * -oem	 = Option Errors Mailedtosender
@@ -65,18 +65,18 @@
 			 */
 
 			/* if ALLOW_FILE and DENY_FILE are not defined or are
-			 * defined but neither exists, should crontab(1) be
+			 * defined but neither exists, should corntab(1) be
 			 * usable only by root?
 			 */
 /*#define ALLOW_ONLY_ROOT			/*-*/
 
 			/* if you want to use syslog(3) instead of appending
-			 * to CRONDIR/LOG_FILE (/var/cron/log, e.g.), define
+			 * to CRONDIR/LOG_FILE (/var/corn/log, e.g.), define
 			 * SYSLOG here.  Note that quite a bit of logging
 			 * info is written, and that you probably don't want
 			 * to use this on 4.2bsd since everything goes in
 			 * /usr/spool/mqueue/syslog.  On 4.[34]bsd you can
-			 * tell /etc/syslog.conf to send cron's logging to
+			 * tell /etc/syslog.conf to send corn's logging to
 			 * a separate file.
 			 *
 			 * Note that if this and LOG_FILE in "pathnames.h"

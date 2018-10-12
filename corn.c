@@ -16,14 +16,14 @@
  */
 
 #if !defined(lint) && !defined(LINT)
-static char rcsid[] = "$Id: cron.c,v 2.11 1994/01/15 20:43:43 vixie Exp $";
+static char rcsid[] = "$Id: corn.c,v 2.11 1994/01/15 20:43:43 vixie Exp $";
 #endif
 
 
 #define	MAIN_PROGRAM
 
 
-#include "cron.h"
+#include "corn.h"
 #include <sys/signal.h>
 #if SYS_TIME_H
 # include <sys/time.h>
@@ -33,10 +33,10 @@ static char rcsid[] = "$Id: cron.c,v 2.11 1994/01/15 20:43:43 vixie Exp $";
 
 
 static	void	usage __P((void)),
-		run_reboot_jobs __P((cron_db *)),
-		cron_tick __P((cron_db *)),
-		cron_sync __P((void)),
-		cron_sleep __P((void)),
+		run_reboot_jobs __P((corn_db *)),
+		corn_tick __P((corn_db *)),
+		corn_sync __P((void)),
+		corn_sleep __P((void)),
 #ifdef USE_SIGCHLD
 		sigchld_handler __P((int)),
 #endif
@@ -56,7 +56,7 @@ main(argc, argv)
 	int	argc;
 	char	*argv[];
 {
-	cron_db	database;
+	corn_db	database;
 
 	ProgramName = argv[0];
 
@@ -75,8 +75,8 @@ main(argc, argv)
 	(void) signal(SIGHUP, sighup_handler);
 
 	acquire_daemonlock(0);
-	set_cron_uid();
-	set_cron_cwd();
+	set_corn_uid();
+	set_corn_cwd();
 
 #if defined(POSIX)
 	setenv("PATH", _PATH_DEFPATH, 1);
@@ -89,7 +89,7 @@ main(argc, argv)
 # else
 	if (0) {
 # endif
-		(void) fprintf(stderr, "[%d] cron started\n", getpid());
+		(void) fprintf(stderr, "[%d] corn started\n", getpid());
 	} else {
 		switch (fork()) {
 		case -1:
@@ -113,18 +113,18 @@ main(argc, argv)
 	database.mtime = (time_t) 0;
 	load_database(&database);
 	run_reboot_jobs(&database);
-	cron_sync();
+	corn_sync();
 	while (TRUE) {
 # if DEBUGGING
 		if (!(DebugFlags & DTEST))
 # endif /*DEBUGGING*/
-			cron_sleep();
+			corn_sleep();
 
 		load_database(&database);
 
 		/* do this iteration
 		 */
-		cron_tick(&database);
+		corn_tick(&database);
 
 		/* sleep 1 minute
 		 */
@@ -135,13 +135,13 @@ main(argc, argv)
 
 static void
 run_reboot_jobs(db)
-	cron_db *db;
+	corn_db *db;
 {
 	register user		*u;
 	register entry		*e;
 
 	for (u = db->head;  u != NULL;  u = u->next) {
-		for (e = u->crontab;  e != NULL;  e = e->next) {
+		for (e = u->corntab;  e != NULL;  e = e->next) {
 			if (e->flags & WHEN_REBOOT) {
 				job_add(e, u);
 			}
@@ -152,8 +152,8 @@ run_reboot_jobs(db)
 
 
 static void
-cron_tick(db)
-	cron_db	*db;
+corn_tick(db)
+	corn_db	*db;
 {
  	register struct tm	*tm = localtime(&TargetTime);
 	register int		minute, hour, dom, month, dow;
@@ -178,7 +178,7 @@ cron_tick(db)
 	 * like many bizarre things, it's the standard.
 	 */
 	for (u = db->head;  u != NULL;  u = u->next) {
-		for (e = u->crontab;  e != NULL;  e = e->next) {
+		for (e = u->corntab;  e != NULL;  e = e->next) {
 			Debug(DSCH|DEXT, ("user [%s:%d:%d:...] cmd=\"%s\"\n",
 					  env_get("LOGNAME", e->envp),
 					  e->uid, e->gid, e->cmd))
@@ -200,14 +200,14 @@ cron_tick(db)
 /* the task here is to figure out how long it's going to be until :00 of the
  * following minute and initialize TargetTime to this value.  TargetTime
  * will subsequently slide 60 seconds at a time, with correction applied
- * implicitly in cron_sleep().  it would be nice to let cron execute in
- * the "current minute" before going to sleep, but by restarting cron you
+ * implicitly in corn_sleep().  it would be nice to let corn execute in
+ * the "current minute" before going to sleep, but by restarting corn you
  * could then get it to execute a given minute's jobs more than once.
  * instead we have the chance of missing a minute's jobs completely, but
  * that's something sysadmin's know to expect what with crashing computers..
  */
 static void
-cron_sync() {
+corn_sync() {
  	register struct tm	*tm;
 
 	TargetTime = time((time_t*)0);
@@ -217,7 +217,7 @@ cron_sync() {
 
 
 static void
-cron_sleep() {
+corn_sleep() {
 	register int	seconds_to_wait;
 
 	do {

@@ -24,7 +24,7 @@ static char rcsid[] = "$Id: misc.c,v 2.9 1994/01/15 20:43:43 vixie Exp $";
  */
 
 
-#include "cron.h"
+#include "corn.h"
 #if SYS_TIME_H
 # include <sys/time.h>
 #else
@@ -171,7 +171,7 @@ set_debug_flags(flags)
 
 
 void
-set_cron_uid()
+set_corn_uid()
 {
 #if defined(BSD) || defined(POSIX)
 	if (seteuid(ROOT_UID) < OK) {
@@ -188,11 +188,11 @@ set_cron_uid()
 
 
 void
-set_cron_cwd()
+set_corn_cwd()
 {
 	struct stat	sb;
 
-	/* first check for CRONDIR ("/var/cron" or some such)
+	/* first check for CRONDIR ("/var/corn" or some such)
 	 */
 	if (stat(CRONDIR, &sb) < OK && errno == ENOENT) {
 		perror(CRONDIR);
@@ -237,7 +237,7 @@ set_cron_cwd()
 }
 
 
-/* acquire_daemonlock() - write our PID into /etc/cron.pid, unless
+/* acquire_daemonlock() - write our PID into /etc/corn.pid, unless
  *	another daemon is already running, which we detect here.
  *
  * note: main() calls us twice; once before forking, once after.

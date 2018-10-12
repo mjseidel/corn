@@ -15,31 +15,31 @@
 .\" * Paul Vixie          <paul@vix.com>          uunet!decwrl!vixie!paul
 .\" */
 .\"
-.\" $Id: crontab.5,v 2.4 1994/01/15 20:43:43 vixie Exp $
+.\" $Id: corntab.5,v 2.4 1994/01/15 20:43:43 vixie Exp $
 .\" 
 .TH CRONTAB 5 "24 January 1994"
 .UC 4
 .SH NAME
-crontab \- tables for driving cron
+corntab \- tables for driving corn
 .SH DESCRIPTION
 A
-.I crontab
+.I corntab
 file contains instructions to the
-.IR cron (8)
+.IR corn (8)
 daemon of the general form: ``run this command at this time on this date''.
-Each user has their own crontab, and commands in any given crontab will be
-executed as the user who owns the crontab.  Uucp and News will usually have
-their own crontabs, eliminating the need for explicitly running
+Each user has their own corntab, and commands in any given corntab will be
+executed as the user who owns the corntab.  Uucp and News will usually have
+their own corntabs, eliminating the need for explicitly running
 .IR su (1)
-as part of a cron command.
+as part of a corn command.
 .PP
 Blank lines and leading spaces and tabs are ignored.  Lines whose first
 non-space character is a pound-sign (#) are comments, and are ignored.
-Note that comments are not allowed on the same line as cron commands, since
+Note that comments are not allowed on the same line as corn commands, since
 they will be taken to be part of the command.  Similarly, comments are not
 allowed on the same line as environment variable settings.
 .PP
-An active line in a crontab will be either an environment setting or a cron
+An active line in a corntab will be either an environment setting or a corn
 command.  An environment setting is of the form,
 .PP
     name = value
@@ -56,36 +56,36 @@ leading or trailing blanks.
 .PP
 Several environment variables are set up
 automatically by the
-.IR cron (8)
+.IR corn (8)
 daemon.
 SHELL is set to /bin/sh, and LOGNAME and HOME are set from the /etc/passwd 
-line of the crontab's owner.
-HOME and SHELL may be overridden by settings in the crontab; LOGNAME may not.
+line of the corntab's owner.
+HOME and SHELL may be overridden by settings in the corntab; LOGNAME may not.
 .PP
 (Another note: the LOGNAME variable is sometimes called USER on BSD systems...
 on these systems, USER will be set also.)
 .PP
 In addition to LOGNAME, HOME, and SHELL,
-.IR cron (8)
+.IR corn (8)
 will look at MAILTO if it has any reason to send mail as a result of running
-commands in ``this'' crontab.  If MAILTO is defined (and non-empty), mail is
+commands in ``this'' corntab.  If MAILTO is defined (and non-empty), mail is
 sent to the user so named.  If MAILTO is defined but empty (MAILTO=""), no
-mail will be sent.  Otherwise mail is sent to the owner of the crontab.  This
+mail will be sent.  Otherwise mail is sent to the owner of the corntab.  This
 option is useful if you decide on /bin/mail instead of /usr/lib/sendmail as
-your mailer when you install cron -- /bin/mail doesn't do aliasing, and UUCP
+your mailer when you install corn -- /bin/mail doesn't do aliasing, and UUCP
 usually doesn't read its mail.
 .PP
-The format of a cron command is very much the V7 standard, with a number of
+The format of a corn command is very much the V7 standard, with a number of
 upward-compatible extensions.  Each line has five time and date fields,
-followed by a user name if this is the system crontab file,
+followed by a user name if this is the system corntab file,
 followed by a command.  Commands are executed by
-.IR cron (8)
+.IR corn (8)
 when the minute, hour, and month of year fields match the current time,
 .I and
 when at least one of the two day fields (day of month, or day of week)
 match the current time (see ``Note'' below).
-.IR cron (8)
-examines cron entries once every minute.
+.IR corn (8)
+examines corn entries once every minute.
 The time and date fields are:
 .IP
 .ta 1.5i
@@ -131,7 +131,7 @@ The ``sixth'' field (the rest of the line) specifies the command to be
 run.
 The entire command portion of the line, up to a newline or %
 character, will be executed by /bin/sh or by the shell
-specified in the SHELL variable of the cronfile.
+specified in the SHELL variable of the cornfile.
 Percent-signs (%) in the command, unless escaped with backslash
 (\\), will be changed into newline characters, and all data
 after the first % will be sent to the command as standard
@@ -151,7 +151,7 @@ month, plus every Friday.
 
 # use /bin/sh to run commands, no matter what /etc/passwd says
 SHELL=/bin/sh
-# mail any output to `paul', no matter whose crontab this is
+# mail any output to `paul', no matter whose corntab this is
 MAILTO=paul
 #
 # run five minutes after midnight, every day
@@ -164,23 +164,23 @@ MAILTO=paul
 5 4 * * sun     echo "run at 5 after 4 every sunday"
 .fi
 .SH SEE ALSO
-cron(8), crontab(1)
+corn(8), corntab(1)
 .SH EXTENSIONS
 When specifying day of week, both day 0 and day 7 will be considered Sunday.
 BSD and ATT seem to disagree about this.
 .PP
 Lists and ranges are allowed to co-exist in the same field.  "1-3,7-9" would
-be rejected by ATT or BSD cron -- they want to see "1-3" or "7,8,9" ONLY.
+be rejected by ATT or BSD corn -- they want to see "1-3" or "7,8,9" ONLY.
 .PP
 Ranges can include "steps", so "1-9/2" is the same as "1,3,5,7,9".
 .PP
 Names of months or days of the week can be specified by name.
 .PP
-Environment variables can be set in the crontab.  In BSD or ATT, the
+Environment variables can be set in the corntab.  In BSD or ATT, the
 environment handed to child processes is basically the one from /etc/rc.
 .PP
-Command output is mailed to the crontab owner (BSD can't do this), can be
-mailed to a person other than the crontab owner (SysV can't do this), or the
+Command output is mailed to the corntab owner (BSD can't do this), can be
+mailed to a person other than the corntab owner (SysV can't do this), or the
 feature can be turned off and no mail will be sent at all (SysV can't do this
 either).
 .SH AUTHOR
