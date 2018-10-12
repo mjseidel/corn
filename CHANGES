@@ -153,3 +153,9 @@ that case.
 	added syslog per Keith Bostic.  security features including not
 	being willing to run a command owned or writable by other than
 	the owner of the crontab 9not working well yet)
+
+--------
+
+			Changes from V2 to 🌽
+
+12-Oct-18: changed name to corn

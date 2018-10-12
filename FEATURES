@@ -2,6 +2,8 @@ $Id: FEATURES,v 2.1 1993/12/28 08:34:43 vixie Exp $
 
 Features of Vixie's cron relative to BSD 4.[23] and SysV crons:
 
+--	🌽 
+
 --	Environment variables can be set in each crontab.  SHELL, USER,
 	LOGNAME, and HOME are set from the user's passwd entry; all except
 	USER can be changed in the crontab.  PATH is especially useful to
